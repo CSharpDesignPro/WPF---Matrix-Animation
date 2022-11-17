@@ -1,0 +1,282 @@
+﻿<!--
+    /// Author : R. Arun Mutharasu
+    /// Created On :16-11-2022
+    /// YouTube Channel : C# Design Pro 
+ -->
+    
+    <Window x:Class="Matrix_Animation_App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Matrix_Animation_App"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Height="800"
+        Width="1200"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Background="Transparent">
+    
+    <Grid>
+        
+        <!--// Background //-->
+        <Border Background="#413F43"
+                CornerRadius="20" />
+
+        <Ellipse Fill="#CBBC2E"
+                 Height="1000"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 Width="1500"
+                 RenderTransformOrigin="0.5,0.5">
+
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="-35" />
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+            
+        </Ellipse>     
+        
+        <!--// Circuit //-->
+
+        <Canvas Margin="65,-25,0,0">
+            
+            <!--// Path //-->
+
+            <Path Style="{StaticResource Path_One}" />
+            <Path Style="{StaticResource Path_Two}" />
+            
+            <!--// Track //-->
+
+            <Path x:Name="Track"
+                  Stroke="#4F4D53"
+                  StrokeThickness="5"
+                  StrokeDashArray="4"
+                  Data="M430,180 L780,180 C1080,170 1000,420 800,400 C620,380 550,590 920,520 C1100,480 920,870 610,580 C430,400 630,320 500,280 C180,220 250,500 400,540 C660,620 430,730 280,700 C150,670 110,700 100,500 C80,300 50,180 250,180 L430,180">
+
+            </Path>
+            
+            <!--// Pole Position //-->
+
+            <Border Style="{StaticResource P1}" />
+            
+            <!--// Start/Finish Flag //-->
+
+            <Image Source="Assets/flag.png"
+                   Margin="423,98,0,0"
+                   Stretch="None" />
+
+            <!--// Car //-->
+
+            <Border Width="34"
+                    Height="26">
+
+                <Border.Background>
+
+                    <ImageBrush ImageSource="Assets/race_car.png"
+                                Stretch="None" />
+
+                </Border.Background>
+
+                <Border.RenderTransform>
+
+                    <TransformGroup>
+
+                        <TranslateTransform X="-14"
+                                            Y="-14" />
+
+                        <RotateTransform x:Name="Drift"
+                                         Angle="0" />
+
+                        <MatrixTransform x:Name="Car" />
+
+                    </TransformGroup>
+                    
+                </Border.RenderTransform>
+
+                <Border.Triggers>
+                    <EventTrigger RoutedEvent="Border.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <MatrixAnimationUsingPath Storyboard.TargetName="Car"
+                                                          Storyboard.TargetProperty="Matrix"
+                                                          DoesRotateWithTangent="True"
+                                                          FillBehavior="HoldEnd"
+                                                          Duration="0:0:0">
+
+                                    <MatrixAnimationUsingPath.PathGeometry>
+                                        <PathGeometry Figures="M0,180 L430,180" />
+                                    </MatrixAnimationUsingPath.PathGeometry>
+                                    
+                                </MatrixAnimationUsingPath>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Border.Triggers>
+                
+            </Border>
+            
+        </Canvas>
+        
+        <!--// Start Button //-->
+
+        <Button x:Name="StartBtn"
+                Style="{StaticResource StartBtn}">
+
+            <Button.Triggers>
+                <EventTrigger RoutedEvent="Button.Click">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            
+                            <!--// Matrix Animation //-->
+
+                            <MatrixAnimationUsingPath Storyboard.TargetName="Car"
+                                                      Storyboard.TargetProperty="Matrix"
+                                                      DoesRotateWithTangent="True"
+                                                      Duration="0:0:40"
+                                                      AccelerationRatio="0.1"
+                                                      DecelerationRatio="0.1">
+
+                                <MatrixAnimationUsingPath.PathGeometry>
+                                    <PathGeometry Figures="M430,180 L780,180 C1080,170 1000,420 800,400 C620,380 550,590 920,520 C1100,480 920,870 610,580 C430,400 630,320 500,280 C180,220 250,500 400,540 C660,620 430,730 280,700 C150,670 110,700 100,500 C80,300 50,180 250,180 L430,180" />
+                                </MatrixAnimationUsingPath.PathGeometry>
+                                
+                            </MatrixAnimationUsingPath>
+                            
+                            <!--// Drift //-->
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="0" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="0"
+                                             To="-10"
+                                             BeginTime="0:0:4.2"
+                                             Duration="0:0:0.4" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="-10"
+                                             To="75"
+                                             BeginTime="0:0:4.6"
+                                             Duration="0:0:1.2" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="75"
+                                             To="-75"
+                                             BeginTime="0:0:8.2"
+                                             Duration="0:0:1.8" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="-75"
+                                             To="0"
+                                             BeginTime="0:0:11.2"
+                                             Duration="0:0:1.5" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="0"
+                                             To="80"
+                                             BeginTime="0:0:12.7"
+                                             Duration="0:0:1" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="80"
+                                             To="0"
+                                             BeginTime="0:0:15"
+                                             Duration="0:0:3.8" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="0"
+                                             To="-75"
+                                             BeginTime="0:0:20.5"
+                                             Duration="0:0:0.8" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="-75"
+                                             To="0"
+                                             BeginTime="0:0:23.5"
+                                             Duration="0:0:1.9" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="0"
+                                             To="80"
+                                             BeginTime="0:0:25.4"
+                                             Duration="0:0:1.2" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="80"
+                                             To="10"
+                                             BeginTime="0:0:27.1"
+                                             Duration="0:0:1" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="10"
+                                             To="55"
+                                             BeginTime="0:0:28.8"
+                                             Duration="0:0:2" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="55"
+                                             To="0"
+                                             BeginTime="0:0:31.5"
+                                             Duration="0:0:1.5" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="0"
+                                             To="45"
+                                             BeginTime="0:0:33.5"
+                                             Duration="0:0:1" />
+
+                            <DoubleAnimation Storyboard.TargetName="Drift"
+                                             Storyboard.TargetProperty="Angle"
+                                             From="45"
+                                             To="0"
+                                             BeginTime="0:0:36"
+                                             Duration="0:0:1" />
+
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Button.Triggers>
+            
+        </Button>
+        
+        <!--// Header //-->
+        <Border Style="{StaticResource Header_Border}">
+            <TextBlock Style="{StaticResource Header}" />
+        </Border>
+        
+        <!--// Footer //-->
+        <TextBlock Style="{StaticResource Footer}">
+
+            <TextBlock.RenderTransform>
+                <RotateTransform Angle="-35" />
+            </TextBlock.RenderTransform>
+            
+        </TextBlock>
+        
+        <!--// Exit Button //-->
+        <Button x:Name="ExitBtn"
+                Style="{StaticResource ExitBtnStyle}"
+                Click="ExitBtn_Click" />
+
+    </Grid>
+    
+</Window>
